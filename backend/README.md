@@ -9,6 +9,21 @@ The backend accepts NIfTI scans, schedules inference jobs, tracks job state, and
 
 It also includes an explainability extension that can run Grad-CAM and occlusion analysis on completed jobs and expose those results through dedicated endpoints.
 
+## Runtime configuration
+
+The gateway resolves worker compute endpoints from environment variables:
+
+- `WORKERS`: comma-separated worker base URLs (highest priority), example:
+  - `WORKERS=http://127.0.0.1:8001,http://127.0.0.1:8002`
+- `WORKER_HOST` + `WORKER_PORT`: fallback when `WORKERS` is not set
+  - defaults to `127.0.0.1` and `8001`
+- `PORT`: Express gateway port (default `5000`)
+
+At runtime, you can also manage worker endpoints through API:
+
+- `GET /api/compute/services` → current worker list
+- `PUT /api/compute/services` with body `{ "workers": ["http://127.0.0.1:8001", "8002"] }`
+
 ## Tools used (rough)
 
 - Express for the gateway API

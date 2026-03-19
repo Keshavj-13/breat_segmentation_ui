@@ -64,6 +64,9 @@ export default function XaiApp() {
   const [submitting, setSubmitting] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadEta, setUploadEta] = useState(null);
+  const [computeServicesInput, setComputeServicesInput] = useState("");
+  const [computeServicesMsg, setComputeServicesMsg] = useState("");
+  const [updatingComputeServices, setUpdatingComputeServices] = useState(false);
 
   async function refreshGpu() {
     try {
@@ -75,8 +78,45 @@ export default function XaiApp() {
     }
   }
 
+  async function refreshComputeServices(showError = false) {
+    try {
+      const r = await api.computeServices();
+      const workers = Array.isArray(r?.workers) ? r.workers : [];
+      setComputeServicesInput(workers.join(", "));
+      if (!showError) setComputeServicesMsg("");
+    } catch (e) {
+      if (showError) setComputeServicesMsg(String(e?.message || e));
+    }
+  }
+
+  async function applyComputeServices() {
+    const workers = computeServicesInput
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+    if (!workers.length) {
+      setComputeServicesMsg("Enter at least one compute endpoint (URL or port).");
+      return;
+    }
+
+    setUpdatingComputeServices(true);
+    try {
+      const r = await api.setComputeServices(workers);
+      const activeWorkers = Array.isArray(r?.workers) ? r.workers : workers;
+      setComputeServicesInput(activeWorkers.join(", "));
+      setComputeServicesMsg(`Applied ${activeWorkers.length} compute service(s).`);
+      await refreshGpu();
+    } catch (e) {
+      setComputeServicesMsg(String(e?.message || e));
+    } finally {
+      setUpdatingComputeServices(false);
+    }
+  }
+
   useEffect(() => {
     refreshGpu();
+    refreshComputeServices();
   }, []);
 
   useEffect(() => {
@@ -317,6 +357,40 @@ export default function XaiApp() {
                 <input type="checkbox" checked={live} onChange={(e) => setLive(e.target.checked)} />
                 Auto-refresh {live ? "Enabled" : "Paused"}
               </label>
+            </div>
+
+            <div className="computeControl">
+              <span className="computeLabel">Compute Services</span>
+              <div className="computeEditor">
+                <input
+                  className="computeInput"
+                  type="text"
+                  value={computeServicesInput}
+                  onChange={(e) => setComputeServicesInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") applyComputeServices();
+                  }}
+                  placeholder="8001, 8002 or http://host:8001"
+                />
+                <button
+                  className="btn btnGhost btnSmall"
+                  type="button"
+                  onClick={applyComputeServices}
+                  disabled={updatingComputeServices}
+                >
+                  {updatingComputeServices ? "Applying..." : "Apply"}
+                </button>
+                <button
+                  className="btn btnGhost btnSmall"
+                  type="button"
+                  onClick={() => refreshComputeServices(true)}
+                  disabled={updatingComputeServices}
+                >
+                  Reload
+                </button>
+              </div>
+              <p className="computeHint">Comma-separated services. Port-only values are allowed.</p>
+              {computeServicesMsg ? <p className="computeMsg">{computeServicesMsg}</p> : null}
             </div>
 
             <pre className="systemDump">{JSON.stringify(gpu, null, 2)}</pre>

@@ -36,3 +36,27 @@ This repository is intended for:
 ## Model and implementation notes
 
 To keep this README user-facing, model-centric and implementation-centric notes are documented in [MODEL.md](MODEL.md).
+
+## One-command local run (tunnel + backend + frontend)
+
+You can run tunnel, backend, and frontend in one step (with health checks):
+
+1. Copy `.env.local.example` to `.env.local` and fill your cluster values (including SSH password).
+2. Start:
+   - `bash scripts/stack_up.sh`
+3. Stop:
+   - `bash scripts/stack_down.sh`
+
+Optional clickable launcher (desktop):
+
+- `./run_stack.command`
+
+Notes:
+
+- `.env.local` is ignored by git.
+- Script uses `sshpass` for password-based SSH tunnel automation.
+- Startup validates:
+  - worker health (`/health`)
+  - gateway health (`/api/health`)
+  - gateway compute connectivity (`/api/gpu`)
+  - frontend availability (when enabled)

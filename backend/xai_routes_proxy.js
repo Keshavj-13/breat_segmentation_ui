@@ -9,13 +9,20 @@
  */
 
 import axios from "axios";
+import { getWorkers } from "./runtime_config.js";
 
 /**
  * Attach XAI proxy routes to an Express app.
  * @param {import('express').Express} app - Express application instance
  * @param {Function} workerForFn - Function that resolves job_id → worker URL
+ * @param {Function|Array<string>} workersOrGetter - Workers list or getter for dynamic updates
  */
-export function attachXaiRoutes(app, workerForFn) {
+export function attachXaiRoutes(app, workerForFn, workersOrGetter = getWorkers) {
+  const resolveWorkers = () => {
+    if (typeof workersOrGetter === "function") return workersOrGetter();
+    if (Array.isArray(workersOrGetter)) return workersOrGetter;
+    return getWorkers();
+  };
 
   // Trigger XAI analysis
   app.post("/api/jobs/:id/xai/analyze", async (req, res) => {
@@ -125,7 +132,9 @@ export function attachXaiRoutes(app, workerForFn) {
   // Available colormaps
   app.get("/api/xai/colormaps", async (req, res) => {
     try {
-      const w = (process.env.WORKERS || "http://127.0.0.1:8000").split(",")[0];
+      const workers = resolveWorkers();
+      if (!workers.length) throw new Error("No workers configured");
+      const w = workers[0];
       const r = await axios.get(`${w}/xai/colormaps`, { timeout: 5000 });
       res.json(r.data);
     } catch (e) {

@@ -5,11 +5,14 @@ import axios from "axios";
 import FormData from "form-data";
 import path from "path";
 import { fileURLToPath } from "url";
+import { getWorkers, getGatewayPort, getRuntimeSummary, parseWorkers } from "./runtime_config.js";
 
 import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const UPLOAD_DIR = path.join(__dirname, "uploads");
+fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
 const app = express();
 app.use(cors());
@@ -19,7 +22,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "uploads/"),
+  destination: (req, file, cb) => cb(null, UPLOAD_DIR),
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     cb(null, uniqueSuffix + "-" + file.originalname);
@@ -28,7 +31,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
-const WORKERS = (process.env.WORKERS || "http://127.0.0.1:8000").split(",");
+let WORKERS = getWorkers();
 
 let rr = 0;
 const JOB_ROUTE = new Map(); // job_id -> worker
@@ -42,6 +45,31 @@ function pickWorkers(k) {
 }
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
+
+app.get("/api/compute/services", (req, res) => {
+  res.json({
+    workers: WORKERS,
+    count: WORKERS.length,
+  });
+});
+
+app.put("/api/compute/services", (req, res) => {
+  const workers = parseWorkers(req.body?.workers);
+  if (!workers.length) {
+    return res.status(400).json({
+      error: "No valid compute service endpoints provided.",
+      hint: "Use URLs like http://127.0.0.1:8001 or shorthand like 8001",
+    });
+  }
+
+  WORKERS = workers;
+  rr = 0;
+  return res.json({
+    ok: true,
+    workers: WORKERS,
+    count: WORKERS.length,
+  });
+});
 
 app.get("/api/gpu", async (req, res) => {
   for (const w of WORKERS) {
@@ -301,5 +329,9 @@ app.use((req, res, next) => {
   res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Backend running on http://127.0.0.1:${PORT}`));
+const PORT = getGatewayPort("5000");
+app.listen(PORT, () => {
+  const summary = getRuntimeSummary();
+  console.log(`Backend running on http://127.0.0.1:${PORT}`);
+  console.log(`Workers (${summary.workerCount}): ${summary.workers.join(", ")}`);
+});

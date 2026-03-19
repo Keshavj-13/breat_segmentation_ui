@@ -1,7 +1,7 @@
 """
 XAI Mount Script — attaches XAI routes to the existing worker FastAPI app.
 
-Run using:  uvicorn xai_mount:app --host 0.0.0.0 --port 8000
+Run using:  uvicorn xai_mount:app --host 0.0.0.0 --port 8001
 This replaces the normal  uvicorn worker:app  command.
 
 It imports everything from worker.py unchanged, then layers the XAI

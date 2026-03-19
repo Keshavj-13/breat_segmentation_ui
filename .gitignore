@@ -12,6 +12,7 @@ logs/
 tmp/
 temp/
 .cache/
+.runtime/
 
 # Env / secrets
 .env

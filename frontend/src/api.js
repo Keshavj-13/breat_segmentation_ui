@@ -13,6 +13,13 @@ async function req(path, options = {}) {
 export const api = {
   gpu: () => req("/api/gpu"),
   health: () => req("/api/health"),
+  computeServices: () => req("/api/compute/services"),
+  setComputeServices: (workers) =>
+    req("/api/compute/services", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ workers }),
+    }),
   submit: (fd, onProgress) => {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();

@@ -457,6 +457,56 @@ select:focus {
   gap: 0.54rem;
 }
 
+.computeControl {
+  display: grid;
+  gap: 0.34rem;
+  margin-top: 0.16rem;
+}
+
+.computeLabel {
+  font-size: 0.65rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.computeEditor {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.computeInput {
+  flex: 1 1 260px;
+  min-width: 180px;
+  height: 34px;
+  padding: 0.36rem 0.48rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: #ffffff;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.76rem;
+}
+
+.computeInput:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: var(--focus-ring);
+}
+
+.computeHint,
+.computeMsg {
+  margin: 0;
+  font-size: 0.69rem;
+  color: var(--text-subtle);
+}
+
+.computeMsg {
+  color: var(--text-muted);
+}
+
 .toggleLine {
   display: inline-flex;
   align-items: center;

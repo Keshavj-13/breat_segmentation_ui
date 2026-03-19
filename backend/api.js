@@ -1,6 +1,8 @@
 import axios from "axios";
 
-export const API_BASE = "http://127.0.0.1:8000"
+const backendHost = process.env.BACKEND_HOST || "127.0.0.1";
+const backendPort = process.env.BACKEND_PORT || "5000";
+export const API_BASE = process.env.API_BASE || `http://${backendHost}:${backendPort}`;
 
 export const api = axios.create({
   baseURL: API_BASE,
