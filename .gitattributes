@@ -1,0 +1,6 @@
+* text=auto eol=lf
+
+# Medical volume formats (treat as binary)
+*.nii binary
+*.nii.gz binary
+*.npy binary

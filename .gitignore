@@ -1,0 +1,57 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs / temp
+*.log
+logs/
+tmp/
+temp/
+.cache/
+
+# Env / secrets
+.env
+.env.*
+*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Node / frontend / backend
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Runtime outputs for this project
+backend/uploads/
+uploads/
+backend/worker_temp/
+worker_temp/
+*.nii
+*.nii.gz
+*.npy
+
+# Build / reports / coverage
+coverage/
+*.coverage
+htmlcov/
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.7z
