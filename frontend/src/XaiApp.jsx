@@ -433,111 +433,136 @@ export default function XaiApp() {
         )}
       </section>
 
-      <section className="chapter chapterNarrative chapterOverview">
-        <div className="chapterHead">
-          <h2>Research Overview</h2>
-        </div>
-        <p className="overviewLead">
-          Breast cancer remains one of the most common and lethal malignancies among women, where early detection directly impacts survival.
-          The proposed Enhanced Attention U-Net improves automatic tumor delineation by integrating spatial and channel attention,
-          suppressing irrelevant background responses, and preserving clinically relevant boundaries.
-          The model combines attention-guided representation learning with multi-scale feature fusion to improve sensitivity to small,
-          irregular lesions in challenging low-contrast breast imaging.
-        </p>
-      </section>
-
-      <section className="chapter chapterNarrative chapterArchitecture">
-        <div className="chapterHead">
-          <h2>Architecture Explanation</h2>
-        </div>
-        <div className="architectureGrid">
-          <div className="architectureText">
-            <p><strong>Encoder:</strong> hierarchical Conv3D downsampling captures local texture and global context.</p>
-            <p><strong>SCSE Attention:</strong> spatial and channel recalibration improves focus on tumor-relevant structure.</p>
-            <p><strong>Decoder + Skip Links:</strong> feature fusion restores fine boundaries while preserving anatomical continuity.</p>
-            <p><strong>Segmentation Head:</strong> 1x1x1 projection with sigmoid yields voxel-wise tumor probability maps.</p>
-          </div>
-          <div className="diagramPlaceholder" role="img" aria-label="Architecture diagram placeholder">
-            <div className="diagramStage">Input Volume</div>
-            <div className="diagramArrow" />
-            <div className="diagramStage">Encoder + SCSE</div>
-            <div className="diagramArrow" />
-            <div className="diagramStage">Bottleneck Fusion</div>
-            <div className="diagramArrow" />
-            <div className="diagramStage">Decoder + Skip Links</div>
-            <div className="diagramArrow" />
-            <div className="diagramStage">Segmentation Head</div>
-          </div>
-        </div>
-      </section>
-
-      <section className="chapter chapterNarrative chapterDataset">
-        <div className="chapterHead">
-          <h2>Dataset Description</h2>
-        </div>
-        <div className="datasetGrid">
-          <div className="datasetText">
-            <p>
-              MAMA-MIA is assembled from multi-institutional DCE-MRI cohorts, harmonized to support reproducible breast tumor segmentation research.
-              Cases were curated for pre-treatment clinical relevance and structured metadata consistency.
-            </p>
-            <p>
-              The dataset unifies orientation and metadata conventions while preserving native image characteristics,
-              enabling downstream teams to choose preprocessing strategies matched to their own modeling objectives.
-            </p>
-          </div>
-          <dl className="datasetStats">
-            <div><dt>Total Cases</dt><dd>1,506 DCE-MRI volumes</dd></div>
-            <div><dt>Sources</dt><dd>I-SPY1, I-SPY2, NACT-Pilot, DUKE</dd></div>
-            <div><dt>Scope</dt><dd>Pre-treatment breast cancer MRI</dd></div>
-            <div><dt>Structure</dt><dd>Harmonized metadata + standardized orientation</dd></div>
-          </dl>
-        </div>
-      </section>
-
-      <section className="chapter chapterNarrative chapterPerformance">
-        <div className="chapterHead">
-          <h2>Performance and Results</h2>
-          <p>Representative benchmark values from the proposed model on the reported study setting.</p>
-        </div>
-
-        <div className="metricBars">
-          {benchmarkMetrics.map((m) => (
-            <div key={m.label} className="metricRow">
-              <div className="metricLabel">{m.label}</div>
-              <div className="metricTrack">
-                <div className="metricFill" style={{ width: `${m.value}%` }} />
-              </div>
-              <div className="metricValue">{m.value.toFixed(2)}%</div>
+      <section className="chapter chapterNarrative chapterOverview flowSection flowLeft">
+        <div className="narrativeFlow">
+          <div className="flowPane">
+            <div className="chapterHead">
+              <h2>Research Overview</h2>
             </div>
-          ))}
+            <p className="overviewLead">
+              Breast cancer remains one of the most common and lethal malignancies among women, where early detection directly impacts survival.
+              The proposed Enhanced Attention U-Net improves automatic tumor delineation by integrating spatial and channel attention,
+              suppressing irrelevant background responses, and preserving clinically relevant boundaries.
+              The model combines attention-guided representation learning with multi-scale feature fusion to improve sensitivity to small,
+              irregular lesions in challenging low-contrast breast imaging.
+            </p>
+          </div>
+          <div className="flowSide" aria-hidden="true" />
         </div>
       </section>
 
-      <section className="chapter chapterNarrative chapterDirection">
-        <div className="chapterHead">
-          <h2>Team and Direction</h2>
+      <section className="chapter chapterNarrative chapterArchitecture flowSection flowRight">
+        <div className="narrativeFlow">
+          <div className="flowPane">
+            <div className="chapterHead">
+              <h2>Architecture Explanation</h2>
+            </div>
+            <div className="architectureGrid">
+              <div className="architectureText">
+                <p><strong>Encoder:</strong> hierarchical Conv3D downsampling captures local texture and global context.</p>
+                <p><strong>SCSE Attention:</strong> spatial and channel recalibration improves focus on tumor-relevant structure.</p>
+                <p><strong>Decoder + Skip Links:</strong> feature fusion restores fine boundaries while preserving anatomical continuity.</p>
+                <p><strong>Segmentation Head:</strong> 1x1x1 projection with sigmoid yields voxel-wise tumor probability maps.</p>
+              </div>
+              <div className="diagramPlaceholder" role="img" aria-label="Architecture diagram placeholder">
+                <div className="diagramStage">Input Volume</div>
+                <div className="diagramArrow" />
+                <div className="diagramStage">Encoder + SCSE</div>
+                <div className="diagramArrow" />
+                <div className="diagramStage">Bottleneck Fusion</div>
+                <div className="diagramArrow" />
+                <div className="diagramStage">Decoder + Skip Links</div>
+                <div className="diagramArrow" />
+                <div className="diagramStage">Segmentation Head</div>
+              </div>
+            </div>
+          </div>
+          <div className="flowSide" aria-hidden="true" />
         </div>
-        <div className="directionGrid">
-          <article className="directionBlock directionWho">
-            <h3>Who We Are</h3>
-            <p>
-              A clinical AI research effort focused on dependable tumor segmentation workflows for breast imaging.
-            </p>
-          </article>
-          <article className="directionBlock directionBuilt">
-            <h3>What We Built</h3>
-            <p>
-              A modular, attention-enhanced 3D segmentation pipeline unifying interpretability, quantitative evaluation,
-              and operational execution in a single interface.
-            </p>
-          </article>
-          <article className="directionBlock directionNext">
-            <h3>Where We Are Going</h3>
-            <p>
-              Cross-dataset validation, deployment simplification, and tighter radiology workflow integration with auditable model behavior.
-            </p>
-          </article>
+      </section>
+
+      <section className="chapter chapterNarrative chapterDataset flowSection flowLeft">
+        <div className="narrativeFlow">
+          <div className="flowPane">
+            <div className="chapterHead">
+              <h2>Dataset Description</h2>
+            </div>
+            <div className="datasetGrid">
+              <div className="datasetText">
+                <p>
+                  MAMA-MIA is assembled from multi-institutional DCE-MRI cohorts, harmonized to support reproducible breast tumor segmentation research.
+                  Cases were curated for pre-treatment clinical relevance and structured metadata consistency.
+                </p>
+                <p>
+                  The dataset unifies orientation and metadata conventions while preserving native image characteristics,
+                  enabling downstream teams to choose preprocessing strategies matched to their own modeling objectives.
+                </p>
+              </div>
+              <dl className="datasetStats">
+                <div><dt>Total Cases</dt><dd>1,506 DCE-MRI volumes</dd></div>
+                <div><dt>Sources</dt><dd>I-SPY1, I-SPY2, NACT-Pilot, DUKE</dd></div>
+                <div><dt>Scope</dt><dd>Pre-treatment breast cancer MRI</dd></div>
+                <div><dt>Structure</dt><dd>Harmonized metadata + standardized orientation</dd></div>
+              </dl>
+            </div>
+          </div>
+          <div className="flowSide" aria-hidden="true" />
+        </div>
+      </section>
+
+      <section className="chapter chapterNarrative chapterPerformance flowSection flowRight">
+        <div className="narrativeFlow">
+          <div className="flowPane">
+            <div className="chapterHead">
+              <h2>Performance and Results</h2>
+              <p>Representative benchmark values from the proposed model on the reported study setting.</p>
+            </div>
+
+            <div className="metricBars">
+              {benchmarkMetrics.map((m) => (
+                <div key={m.label} className="metricRow">
+                  <div className="metricLabel">{m.label}</div>
+                  <div className="metricTrack">
+                    <div className="metricFill" style={{ width: `${m.value}%` }} />
+                  </div>
+                  <div className="metricValue">{m.value.toFixed(2)}%</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flowSide" aria-hidden="true" />
+        </div>
+      </section>
+
+      <section className="chapter chapterNarrative chapterDirection flowSection flowLeft">
+        <div className="narrativeFlow">
+          <div className="flowPane">
+            <div className="chapterHead">
+              <h2>Team and Direction</h2>
+            </div>
+            <div className="directionGrid">
+              <article className="directionBlock directionWho">
+                <h3>Who We Are</h3>
+                <p>
+                  A clinical AI research effort focused on dependable tumor segmentation workflows for breast imaging.
+                </p>
+              </article>
+              <article className="directionBlock directionBuilt">
+                <h3>What We Built</h3>
+                <p>
+                  A modular, attention-enhanced 3D segmentation pipeline unifying interpretability, quantitative evaluation,
+                  and operational execution in a single interface.
+                </p>
+              </article>
+              <article className="directionBlock directionNext">
+                <h3>Where We Are Going</h3>
+                <p>
+                  Cross-dataset validation, deployment simplification, and tighter radiology workflow integration with auditable model behavior.
+                </p>
+              </article>
+            </div>
+          </div>
+          <div className="flowSide" aria-hidden="true" />
         </div>
       </section>
     </div>

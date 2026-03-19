@@ -627,12 +627,50 @@ select:focus {
   padding-bottom: calc(var(--section-y) + 6px);
 }
 
-.chapterNarrative .chapterHead {
-  margin-left: var(--narrative-offset);
+.flowSection .chapterHead {
+  margin-bottom: var(--space-3);
+}
+
+.narrativeFlow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  align-items: start;
+}
+
+.flowPane {
+  min-width: 0;
+  width: min(100%, 86%);
+}
+
+.flowSide {
+  display: none;
+}
+
+.flowLeft .flowPane {
+  grid-column: 1;
+  justify-self: start;
+  margin-left: 8%;
+  margin-right: 0;
+}
+
+.flowRight .flowPane {
+  grid-column: 1;
+  justify-self: end;
+  margin-right: 8%;
+  margin-left: 0;
+}
+
+/* Post-overview narrative sections: slightly larger type + tighter lateral drift */
+.chapterArchitecture .narrativeFlow,
+.chapterDataset .narrativeFlow,
+.chapterPerformance .narrativeFlow,
+.chapterDirection .narrativeFlow {
+  gap: 0;
 }
 
 .overviewLead {
-  margin: 0 var(--narrative-offset);
+  margin: 0;
   max-width: 96ch;
   font-size: clamp(0.98rem, 1.2vw, 1.14rem);
   line-height: 1.9;
@@ -644,8 +682,8 @@ select:focus {
   display: grid;
   grid-template-columns: minmax(0, 1.14fr) minmax(320px, 0.86fr);
   gap: clamp(16px, 2.2vw, 34px);
-  margin-left: var(--narrative-offset);
-  max-width: 1380px;
+  margin-left: 0;
+  max-width: 100%;
 }
 
 .architectureText {
@@ -656,7 +694,7 @@ select:focus {
 
 .architectureText p {
   margin: 0;
-  font-size: 0.84rem;
+  font-size: 1.14rem;
   color: var(--text-muted);
   line-height: 1.68;
   max-width: 74ch;
@@ -712,8 +750,8 @@ select:focus {
   display: grid;
   grid-template-columns: minmax(0, 1.22fr) minmax(300px, 0.78fr);
   gap: clamp(16px, 2vw, 32px);
-  margin-left: var(--narrative-offset);
-  max-width: 1380px;
+  margin-left: 0;
+  max-width: 100%;
 }
 
 .datasetText {
@@ -724,7 +762,7 @@ select:focus {
 
 .datasetText p {
   margin: 0;
-  font-size: 0.84rem;
+  font-size: 1.14rem;
   line-height: 1.72;
   color: var(--text-muted);
   max-width: 74ch;
@@ -763,8 +801,8 @@ select:focus {
 }
 
 .metricBars {
-  max-width: 1060px;
-  margin-left: var(--narrative-offset);
+  max-width: 100%;
+  margin-left: 0;
   display: grid;
   gap: 0.52rem;
 }
@@ -777,7 +815,7 @@ select:focus {
 }
 
 .metricLabel {
-  font-size: 0.72rem;
+  font-size: 0.96rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-subtle);
@@ -796,7 +834,7 @@ select:focus {
 
 .metricValue {
   text-align: right;
-  font-size: 0.82rem;
+  font-size: 1.12rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--text);
@@ -808,8 +846,8 @@ select:focus {
   grid-template-columns: 1.2fr 1fr;
   grid-template-rows: auto auto;
   gap: clamp(12px, 1.5vw, 20px);
-  margin-left: var(--narrative-offset);
-  max-width: 1300px;
+  margin-left: 0;
+  max-width: 100%;
 }
 
 .directionBlock {
@@ -829,7 +867,7 @@ select:focus {
 
 .directionBlock p {
   margin: 0.46rem 0 0;
-  font-size: 0.8rem;
+  font-size: 1.09rem;
   line-height: 1.62;
   color: var(--text-muted);
 }
@@ -984,6 +1022,24 @@ select:focus {
     grid-template-columns: 1fr;
   }
 
+  .narrativeFlow,
+  .flowRight .narrativeFlow {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .flowLeft .flowPane,
+  .flowRight .flowPane {
+    grid-column: 1;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .flowSide {
+    display: none;
+  }
+
   .consolePane + .consolePane {
     border-left: none;
     border-top: 1px solid var(--divider);
@@ -1007,12 +1063,12 @@ select:focus {
     grid-row: auto;
   }
 
-  .chapterNarrative .chapterHead,
   .overviewLead,
   .architectureGrid,
   .datasetGrid,
   .metricBars,
   .directionGrid {
+    max-width: 100%;
     margin-left: 0;
   }
 }
